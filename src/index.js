@@ -38,36 +38,22 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-  if (expr.length < 10) return 0;
   let str = "";
   let result = "";
 
-  for (let i = 0; i < expr.length; i += 2) {
-    if (expr.substring(i, i + 2) === "00") {
-      str += "!";
-    }
-    if (expr.substring(i, i + 2) === "10") {
-      str += ".";
-    }
-    if (expr.substring(i, i + 2) === "11") {
-      str += "-";
-    }
-    if (expr.substring(i, i + 10) === "**********") {
-      str += "!space!";
-      i += 8;
-    }
+  str = expr
+  .replace(/11/g, "-")
+  .replace(/10/g, ".")
+  .replace(/00/g, "!")
+  .replace(/[**********]{10}/g, " ");
+  
+  for (let i = 0; i <= str.length + 5; i += 5){
+    let tenSigns = str.substring(i, i + 5).replace(/!/g, "");
+    result += MORSE_TABLE[tenSigns]
   }
-  str.split("!").map((item) => {
-    if (MORSE_TABLE[item]) result += MORSE_TABLE[item];
-    if (item === "space") result += " ";
-  });
   return result;
 }
 
-// module.exports = {
-//   decode,
-// };
-
-decode(
-  "00000000100000111010101010111100111011100000001011111110101011111010101010101010"
-);
+module.exports = {
+  decode,
+};
