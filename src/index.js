@@ -47,13 +47,21 @@ function decode(expr) {
   .replace(/00/g, "!")
   .replace(/[**********]{10}/g, " ");
   
-  for (let i = 0; i <= str.length + 5; i += 5){
-    let tenSigns = str.substring(i, i + 5).replace(/!/g, "");
+  for (let i = 0; i <= str.length ; i += 5){
+    let tenSigns = str.substring(i, i + 5);
+    if(tenSigns.includes(" ")) {
+      i++;
+      tenSigns = str.substring(i, i + 5).replace(/!/g, "");
+      result += " ";
+      tenSigns = tenSigns.trim();
+    }
+    tenSigns = tenSigns.replace(/!/g, "");
     result += MORSE_TABLE[tenSigns]
   }
-  return result;
+  return result = result.replace("undefined", "");
 }
 
 module.exports = {
   decode,
 };
+
